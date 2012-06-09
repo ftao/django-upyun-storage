@@ -1,0 +1,2 @@
+django-upyun-storage
+====================
