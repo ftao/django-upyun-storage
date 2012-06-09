@@ -1,0 +1,5 @@
+=======================
+django-upyun-storage
+=======================
+
+Upyun storage backend for Django pluggable storage system

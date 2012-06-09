@@ -1,0 +1,12 @@
+*.DS_Store
+*.egg
+*.egg-info
+*.elc
+*.orig
+*.pyc
+*.swp
+*.tmp
+*~
+_build/
+build/
+dist/*
