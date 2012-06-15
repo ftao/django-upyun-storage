@@ -1,6 +1,6 @@
 # coding=utf-8
 #
-# Upyun storage backend for Django pluggable storage system.
+# Upyun storage class for Django pluggable storage system.
 # Author: Fei Tao <filia.tao@gmail.com>
 # License: BSD
 #
@@ -45,8 +45,15 @@ LINK_EXPIRATION = getattr(settings, 'UPYUN_LINK_EXPIRATION', 3600 * 24)
 
 class UpYunStorageException(Exception): pass
 
-class UpYunStorage(Storage):
+class ThumbnailSupportMixin(object):
+    support_thumbnail = True
+
+    def thumbnail_name(self, name, size):
+        return name + '!' + size
+
+class UpYunStorage(Storage, ThumbnailSupportMixin):
     """UpYun Storage class for Django pluggable storage system."""
+
 
     def __init__(self, bucket=BUCKET_NAME, 
                        bucket_url=BUCKET_URL,
@@ -131,6 +138,8 @@ class UpYunStorage(Storage):
         url = urlparse.urljoin(self.bucket_url, name)
         if self.enable_link_token:
             etime = int(time.time() + self.link_expiration)
+            if name[0] != '/':
+                name = '/' + name
             sign = hashlib.md5('%s&%s&%s' %(self.link_token,etime,name)).hexdigest()[12:20] + str(etime)
             url = url + '?_upt=' + sign
         return url
@@ -168,5 +177,3 @@ class UpYunStorageFile(File):
         if self._is_dirty:
             self._storage._put_file(self._name, self.file.getvalue())
         self.file.close()
-
-
