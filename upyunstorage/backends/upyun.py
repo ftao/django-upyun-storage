@@ -74,7 +74,7 @@ class UpYunStorage(Storage, ThumbnailSupportMixin):
         self.upyun_client = UpYun(self.bucket, self.operator_name, self.operator_password)
 
     def _open(self, name, mode='rb'):
-        if 'w' not in mode and not self.exist(name):
+        if 'w' not in mode and not self.exists(name):
             raise IOError('File does not exist: %s' % name)
         return UpYunStorageFile(name, mode, self)
 
