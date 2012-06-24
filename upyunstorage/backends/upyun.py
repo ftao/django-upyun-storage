@@ -106,7 +106,7 @@ class UpYunStorage(Storage, ThumbnailSupportMixin):
     #    return name
 
     def listdir(self, path):
-        raise NotImplementedError()
+        return [d.filename for d in self.upyun_client.readDir(path)]
 
     def delete(self, name):
         try:
